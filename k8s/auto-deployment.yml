@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: npuzzle-fe-b-slitherlink
+  name: npuzzle-fe-b-slitherlink
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: npuzzle-fe-b-slitherlink
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: npuzzle-fe-b-slitherlink
+    spec:
+      containers:
+      - name: fe-b-slitherlink
+        image: <IMAGE>
+        ports:
+          - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: npuzzle-fe-b-slitherlink-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: npuzzle-fe-b-slitherlink
